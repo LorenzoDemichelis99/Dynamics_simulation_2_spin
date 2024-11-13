@@ -28,7 +28,7 @@ function simulation_2_spin(G::SimpleGraph, T::Int64, Δ::F, gx::Function, jx::Fu
                 λ_temp_1 += sim.J[i,k] * sim.x[k,1] * sim.x[i,1]
             end
         end
-        sim.λ[1] = (1/N) * (λ_temp_1 + λ_temp_2)
+        sim.λ[1] = (1/N) * (λ_temp_1 + ((1/Δ) * λ_temp_2))
         previous_η[:] = copy(current_η)
     else
         sim.λ[1] = 0.0
@@ -63,7 +63,7 @@ function simulation_2_spin(G::SimpleGraph, T::Int64, Δ::F, gx::Function, jx::Fu
                     λ_temp_1 += sim.J[i,k] * sim.x[k,t] * sim.x[i,t]
                 end
             end
-            sim.λ[t] = (1/N) * (λ_temp_1 + λ_temp_2)
+            sim.λ[t] = (1/N) * (λ_temp_1 + ((1/Δ) * λ_temp_2))
 
             previous_η[:] = copy(current_η)
         else
