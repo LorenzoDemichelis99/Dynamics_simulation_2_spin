@@ -27,3 +27,22 @@ The Lagrange multiplier is computed by means of the following equation:
     \frac{d}{dt} \sum_{i \in V} x_{i}^{2}(t) = 0 \rightarrow \sum_{i \in V} \frac{dx_{i}(t)}{dt} x_{i}(t) = 0 \rightarrow \lambda(t) = \frac{1}{|V|} \sum_{i \in V} x_{i}(t) \sum_{k \in \partial i} J_{ik} x_{k}(t) + \frac{1}{|V|} \sum_{i \in V} \eta_{i}(t) x_{i}(t)
 \end{equation}
 ```
+The equations describing the evolution of the degrees of freedom are integrated using the Euler-Maruyama scheme, where time is discretized as $t=n\Delta$, with $\Delta$ being a small time step. By setting $x_{i}^{n} = x(t=n\Delta)$ and by choosing the Ito convention for the noise, $\Delta\eta_{i}^{n} = \int_{n\Delta}^{(n+1)\Delta} dt \eta_{i}(t)$, the equations of the dynamics in discrete time becomes:
+```math
+\begin{equation}
+    x_{i}^{n+1} = x_{i}^{n} - \lambda^{n} x_{i}^{n}] \Delta + \sum_{j \in \partial i} J_{ij} x_{j}^{n} \Delta + \Delta \eta_{i}^{n}
+\end{equation}
+```
+with $\Delta\eta_{i}^{n}$ being such that:
+```math
+\begin{align*}
+    & \langle \Delta\eta_{i}^{n} \rangle = 0 \\
+    & \langle \Delta\eta_{i}^{n} \Delta\eta_{j}^{n'} \rangle = 2 D \delta_{i,j} \Delta \delta_{n,n'}
+\end{align*}
+```
+In discrete time, the equation for the Lagrange multiplier becomes:
+```math
+\begin{equation}
+    \lambda^{n} = \frac{1}{|V|} \sum_{i \in V} x_{i}^{n} \sum_{k \in \partial i} J_{ik} x_{k}^{n} + \frac{1}{|V| \Delta} \sum_{i \in V} \Delta\eta_{i}^{n} x_{i}^{n}
+\end{equation}
+```
