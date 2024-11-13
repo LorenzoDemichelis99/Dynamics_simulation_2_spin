@@ -11,13 +11,19 @@ The file structure is the following: simulation_data_2_spin.jl contains the code
 Let $G=(V,E)$ be the graph on which the dynamics is defined, with $V$ being the node set and $E$ being the edge set; the evolution of the degree of freedom $x_{i}(t)$, with $i \in V$, is determined by the following stochastic differential equation:
 ```math
 \begin{equation}
-    \frac{dx_{i}}{dt} = f[x_{i}(t)] + \sum_{j \in \partial i} J_{ij} x_{j}(t) + \eta_{i}(t)
+    \frac{dx_{i}}{dt} = - \lambda(t) x_{i}(t) + \sum_{j \in \partial i} J_{ij} x_{j}(t) + \eta_{i}(t)
 \end{equation}
 ```
-with $f[x_{i}(t)]$ being the local term of the dynamics, $\partial i$ being the neighborhood of node $i$, $J_{ij}$ being the coupling constant between $x_{i}(t)$ and $x_{j}(t)$ and $\eta_{i}(t)$ being the noise, which has the following properties:
+with $\lambda (t)$ being the Lagrange multiplier implementing the spherical constraint $\sum_{i \in V} x_{i}^{2}(t) = |V|$, $\partial i$ being the neighborhood of node $i$, $J_{ij}$ being the coupling constant between $x_{i}(t)$ and $x_{j}(t)$ and $\eta_{i}(t)$ being the noise, which has the following properties:
 ```math
 \begin{align*}
     & \langle \eta_{i}(t) \rangle = 0 \\
     & \langle \eta_{i}(t) \eta_{j}(t') \rangle = 2 D \delta_{i,j} \delta(t-t')
 \end{align*}
+```
+The Lagrange multiplier is computed by means of the following equation:
+```math
+\begin{equation}
+    \frac{d}{dt} \sum_{i \in V} x_{i}^{2}(t) = 0 \rightarrow \sum_{i \in V} \frac{dx_{i}(t)}{dt} x_{i}(t) = 0 \rightarrow \lambda(t) = \frac{1}{|V|} \sum_{i \in V} x_{i}(t) \sum_{k \in \partial i} J_{ik} x_{k}(t) + \frac{1}{|V|} \sum_{i \in V} \eta_{i}(t) x_{i}(t)
+\end{equation}
 ```
